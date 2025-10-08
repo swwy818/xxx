@@ -10088,6 +10088,8 @@ ${xProfile.showRealName && xProfile.realName ? `- 真实姓名：${xProfile.real
       })();
 
       // 解析层容错：清理代码块/噪声并尽力提取第一个 JSON 对象或数组
+      // 版本戳用于避免浏览器缓存
+      window.__BUILD_VERSION__ = '2025-10-08T16:00:00+08:00';
       const SafeJSON = (() => {
         function stripCodeFences(text) {
           if (!text) return text;
@@ -10493,11 +10495,58 @@ ${npc.homepage || '暂无主页内容设置'}
           const isGoogle = /generativelanguage\.googleapis\.com/i.test(String(geminiConfig.url||''));
           const forceBearer = typeof window!=='undefined' && window.GEMINI_FORCE_BEARER===true;
           const forceQuery = typeof window!=='undefined' && window.GEMINI_FORCE_QUERY_KEY===true;
+          const forceOpenAI = typeof window!=='undefined' && window.GEMINI_FORCE_OPENAI_STYLE===true;
           const h = (geminiConfig.data && geminiConfig.data.headers) || (geminiConfig.data.headers = {});
+          // 基础鉴权策略
           if (forceBearer) { h['Authorization'] = `Bearer ${apiKey}`; }
           else if (forceQuery && !isGoogle) { delete h['Authorization']; }
           else if (isGoogle) { delete h['Authorization']; }
           else { h['Authorization'] = `Bearer ${apiKey}`; }
+          // 如果不是官方域（或强制 OpenAI 风格），将 generateContent 转换为 /v1/chat/completions
+          if (!isGoogle || forceOpenAI) {
+            try {
+              const u = new URL(geminiConfig.url, (typeof location!=='undefined'?location.origin:undefined));
+              const origin = u.origin;
+              // OpenAI 风格的目标 URL
+              const chatUrl = `${origin}/v1/chat/completions`;
+              // 尝试从 Gemini 的 body 中提取 messages；若解析失败，则降级为单条用户消息
+              let openaiMessages = [];
+              try {
+                const bodyObj = JSON.parse(geminiConfig.data?.body || '{}');
+                // Gemini: contents: [{role:'user'|'model', parts:[{text:'...'}]}]
+                const contents = Array.isArray(bodyObj.contents) ? bodyObj.contents : [];
+                openaiMessages = contents.map(c => {
+                  const role = (c.role==='model') ? 'assistant' : 'user';
+                  const text = (c.parts && c.parts[0] && c.parts[0].text) ? c.parts[0].text : '';
+                  return { role, content: text };
+                }).filter(m => m.content);
+              } catch (_) {
+                // ignore, fallback below
+              }
+              if (!openaiMessages.length) {
+                // 兜底：以“当前意图不变”的方式至少发起一次请求，避免空 body
+                openaiMessages = [{ role: 'user', content: '继续按上文设定生成所需的JSON结果。' }];
+              }
+              // 重写为 OpenAI 风格 payload
+              geminiConfig.url = chatUrl;
+              geminiConfig.data = {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  ...(h || {}),
+                },
+                body: JSON.stringify({
+                  model: (typeof model!=='undefined' && model) ? model : 'gpt-4o-mini',
+                  messages: openaiMessages,
+                  temperature: 0.7
+                })
+              };
+              // 确保解析分支走 OpenAI（choices）
+              try { isGemini = false; } catch (_) {}
+            } catch (e) {
+              // URL 解析失败则保持原状
+            }
+          }
         }
         response = await ApiClient.fetchWithRetry(geminiConfig.url, geminiConfig.data);
       } else {
