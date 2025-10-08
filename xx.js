@@ -7169,6 +7169,16 @@ ${enabledCustomCategories.length > 0 ? `7. 自定义分类的热搜要紧密围�
             }),
           },
         };
+        {
+          const isGoogle = /generativelanguage\.googleapis\.com/i.test(String(geminiConfig.url||''));
+          const forceBearer = typeof window!=='undefined' && window.GEMINI_FORCE_BEARER===true;
+          const forceQuery = typeof window!=='undefined' && window.GEMINI_FORCE_QUERY_KEY===true;
+          const h = (geminiConfig.data && geminiConfig.data.headers) || (geminiConfig.data.headers = {});
+          if (forceBearer) { h['Authorization'] = `Bearer ${apiKey}`; }
+          else if (forceQuery && !isGoogle) { delete h['Authorization']; }
+          else if (isGoogle) { delete h['Authorization']; }
+          else { h['Authorization'] = `Bearer ${apiKey}`; }
+        }
         response = await ApiClient.fetchWithRetry(geminiConfig.url, geminiConfig.data);
       } else {
         const openAiPayload = {
@@ -7795,6 +7805,16 @@ ${xProfile.showRealName && xProfile.realName ? `- 真实姓名：${xProfile.real
             }),
           },
         };
+        {
+          const isGoogle = /generativelanguage\.googleapis\.com/i.test(String(geminiConfig.url||''));
+          const forceBearer = typeof window!=='undefined' && window.GEMINI_FORCE_BEARER===true;
+          const forceQuery = typeof window!=='undefined' && window.GEMINI_FORCE_QUERY_KEY===true;
+          const h = (geminiConfig.data && geminiConfig.data.headers) || (geminiConfig.data.headers = {});
+          if (forceBearer) { h['Authorization'] = `Bearer ${apiKey}`; }
+          else if (forceQuery && !isGoogle) { delete h['Authorization']; }
+          else if (isGoogle) { delete h['Authorization']; }
+          else { h['Authorization'] = `Bearer ${apiKey}`; }
+        }
         response = await ApiClient.fetchWithRetry(geminiConfig.url, geminiConfig.data);
       } else {
         const openAiPayload = {
@@ -10469,6 +10489,16 @@ ${npc.homepage || '暂无主页内容设置'}
             }),
           },
         };
+        {
+          const isGoogle = /generativelanguage\.googleapis\.com/i.test(String(geminiConfig.url||''));
+          const forceBearer = typeof window!=='undefined' && window.GEMINI_FORCE_BEARER===true;
+          const forceQuery = typeof window!=='undefined' && window.GEMINI_FORCE_QUERY_KEY===true;
+          const h = (geminiConfig.data && geminiConfig.data.headers) || (geminiConfig.data.headers = {});
+          if (forceBearer) { h['Authorization'] = `Bearer ${apiKey}`; }
+          else if (forceQuery && !isGoogle) { delete h['Authorization']; }
+          else if (isGoogle) { delete h['Authorization']; }
+          else { h['Authorization'] = `Bearer ${apiKey}`; }
+        }
         response = await ApiClient.fetchWithRetry(geminiConfig.url, geminiConfig.data);
       } else {
         const openAiPayload = {
@@ -11467,6 +11497,16 @@ accountReplies数组（2-4条，账户的回复记录）：
             }),
           },
         };
+        {
+          const isGoogle = /generativelanguage\.googleapis\.com/i.test(String(geminiConfig.url||''));
+          const forceBearer = typeof window!=='undefined' && window.GEMINI_FORCE_BEARER===true;
+          const forceQuery = typeof window!=='undefined' && window.GEMINI_FORCE_QUERY_KEY===true;
+          const h = (geminiConfig.data && geminiConfig.data.headers) || (geminiConfig.data.headers = {});
+          if (forceBearer) { h['Authorization'] = `Bearer ${apiKey}`; }
+          else if (forceQuery && !isGoogle) { delete h['Authorization']; }
+          else if (isGoogle) { delete h['Authorization']; }
+          else { h['Authorization'] = `Bearer ${apiKey}`; }
+        }
         response = await ApiClient.fetchWithRetry(geminiConfig.url, geminiConfig.data);
       } else {
         const openAiPayload = {
@@ -13730,6 +13770,16 @@ ${existingQuestionsContext}
             }),
           },
         };
+        {
+          const isGoogle = /generativelanguage\.googleapis\.com/i.test(String(geminiConfig.url||''));
+          const forceBearer = typeof window!=='undefined' && window.GEMINI_FORCE_BEARER===true;
+          const forceQuery = typeof window!=='undefined' && window.GEMINI_FORCE_QUERY_KEY===true;
+          const h = (geminiConfig.data && geminiConfig.data.headers) || (geminiConfig.data.headers = {});
+          if (forceBearer) { h['Authorization'] = `Bearer ${apiKey}`; }
+          else if (forceQuery && !isGoogle) { delete h['Authorization']; }
+          else if (isGoogle) { delete h['Authorization']; }
+          else { h['Authorization'] = `Bearer ${apiKey}`; }
+        }
         response = await ApiClient.fetchWithRetry(geminiConfig.url, geminiConfig.data);
       } else {
         const openAiPayload = {
@@ -20037,6 +20087,16 @@ ${tweetData.link ? `链接：${tweetData.link.title || tweetData.link.url}` : ''
             }),
           },
         };
+        {
+          const isGoogle = /generativelanguage\.googleapis\.com/i.test(String(geminiConfig.url||''));
+          const forceBearer = typeof window!=='undefined' && window.GEMINI_FORCE_BEARER===true;
+          const forceQuery = typeof window!=='undefined' && window.GEMINI_FORCE_QUERY_KEY===true;
+          const h = (geminiConfig.data && geminiConfig.data.headers) || (geminiConfig.data.headers = {});
+          if (forceBearer) { h['Authorization'] = `Bearer ${apiKey}`; }
+          else if (forceQuery && !isGoogle) { delete h['Authorization']; }
+          else if (isGoogle) { delete h['Authorization']; }
+          else { h['Authorization'] = `Bearer ${apiKey}`; }
+        }
         response = await ApiClient.fetchWithRetry(geminiConfig.url, geminiConfig.data);
       } else {
         const openAiPayload = {
@@ -21665,6 +21725,16 @@ ${tweetAuthorCharacter.relationships
             }),
           },
         };
+        {
+          const isGoogle = /generativelanguage\.googleapis\.com/i.test(String(geminiConfig.url||''));
+          const forceBearer = typeof window!=='undefined' && window.GEMINI_FORCE_BEARER===true;
+          const forceQuery = typeof window!=='undefined' && window.GEMINI_FORCE_QUERY_KEY===true;
+          const h = (geminiConfig.data && geminiConfig.data.headers) || (geminiConfig.data.headers = {});
+          if (forceBearer) { h['Authorization'] = `Bearer ${apiKey}`; }
+          else if (forceQuery && !isGoogle) { delete h['Authorization']; }
+          else if (isGoogle) { delete h['Authorization']; }
+          else { h['Authorization'] = `Bearer ${apiKey}`; }
+        }
         response = await ApiClient.fetchWithRetry(geminiConfig.url, geminiConfig.data);
       } else {
         const openAiPayload = {
@@ -22941,6 +23011,16 @@ ${
             }),
           },
         };
+        {
+          const isGoogle = /generativelanguage\.googleapis\.com/i.test(String(geminiConfig.url||''));
+          const forceBearer = typeof window!=='undefined' && window.GEMINI_FORCE_BEARER===true;
+          const forceQuery = typeof window!=='undefined' && window.GEMINI_FORCE_QUERY_KEY===true;
+          const h = (geminiConfig.data && geminiConfig.data.headers) || (geminiConfig.data.headers = {});
+          if (forceBearer) { h['Authorization'] = `Bearer ${apiKey}`; }
+          else if (forceQuery && !isGoogle) { delete h['Authorization']; }
+          else if (isGoogle) { delete h['Authorization']; }
+          else { h['Authorization'] = `Bearer ${apiKey}`; }
+        }
         response = await ApiClient.fetchWithRetry(geminiConfig.url, geminiConfig.data);
       } else {
         const openAiPayload = {
